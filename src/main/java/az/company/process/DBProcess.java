@@ -88,11 +88,11 @@ public class DBProcess {
             DBConnection.closeConnection();
         }
     }
-    public static void searchStudent(){
-        String query = "SELECT * FROM student WHERE studentId = ?";
+    public static void searchStudent(String word){
+        String query = "SELECT * FROM student WHERE name LIKE ?";
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, 2);
+            preparedStatement.setString(1, "%"+word+"%" );
             resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
                 int id = resultSet.getInt("studentId");

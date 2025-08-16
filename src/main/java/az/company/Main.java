@@ -5,6 +5,7 @@ import az.company.process.DBProcess;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
@@ -15,6 +16,9 @@ public class Main {
         listOfStudents.add(student2);
         listOfStudents.add(student3);
         listOfStudents.add(student4);
-        DBProcess.insertStudent(listOfStudents);
+//        DBProcess.insertStudent(listOfStudents);
+        Scanner scanner = new Scanner(System.in);
+        String key = scanner.nextLine();
+        DBProcess.searchStudent(key);
     }
 }
