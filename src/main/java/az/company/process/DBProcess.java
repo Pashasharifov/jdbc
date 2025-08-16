@@ -1,7 +1,7 @@
 package az.company.process;
 
 import az.company.connection.DBConnection;
-import az.company.entitiy.Student;
+import az.company.entity.Student;
 
 import java.sql.*;
 import java.util.List;

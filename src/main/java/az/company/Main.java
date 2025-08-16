@@ -1,6 +1,6 @@
 package az.company;
 
-import az.company.entitiy.Student;
+import az.company.entity.Student;
 import az.company.process.DBProcess;
 
 import java.util.ArrayList;

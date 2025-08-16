@@ -1,4 +1,4 @@
-package az.company.entitiy;
+package az.company.entity;
 
 public class Student {
     private Integer studentId;
