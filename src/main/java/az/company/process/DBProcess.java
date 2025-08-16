@@ -1,8 +1,10 @@
 package az.company.process;
 
 import az.company.connection.DBConnection;
+import az.company.entitiy.Student;
 
 import java.sql.*;
+import java.util.List;
 
 public class DBProcess {
     private static Connection connection = DBConnection.getConnection();
@@ -28,35 +30,38 @@ public class DBProcess {
         }
         DBConnection.closeConnection();
     }
-    public static void insertStudent(){
+    public static void insertStudent(List<Student> listOfStudents){
         try {
             String query = "INSERT INTO student (studentId, name, surname, birthdate, studentNumber) VALUES (?, ?, ?, ?, ?)";
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1,3);
-            preparedStatement.setString(2, "Sharifov");
-            preparedStatement.setString(3, "Test");
-            preparedStatement.setInt(4, 2003);
-            preparedStatement.setString(5, "ombir");
-            preparedStatement.execute();
+            for (Student student : listOfStudents) {
+                preparedStatement.setInt(1, student.getStudentId());
+                preparedStatement.setString(2, student.getName());
+                preparedStatement.setString(3, student.getSurname());
+                preparedStatement.setInt(4, student.getBirthOfDate());
+                preparedStatement.setString(5, student.getStudentNumber());
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
             System.out.println("Data inserted succesfully");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-         finally {
-            try {
+        try {
                 preparedStatement.close();
-            } catch (SQLException e) {
+        } catch (SQLException e) {
                 throw new RuntimeException(e);
-            }
+        }
+        finally {
             DBConnection.closeConnection();
         }
     }
-    public static void updateStudent(){
+    public static void updateStudent(Student student){
         String query = "UPDATE student SET name = ? WHERE studentId = ?";
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, "updated Pasha");
-            preparedStatement.setInt(2, 2);
+            preparedStatement.setString(1, student.getName());
+            preparedStatement.setInt(2, student.getStudentId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -70,11 +75,11 @@ public class DBProcess {
             DBConnection.closeConnection();
         }
     }
-    public static void deleteStudent(){
+    public static void deleteStudent(Student student){
         String query = "DELETE  FROM student WHERE studentId = ?";
         try {
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, 3);
+            preparedStatement.setInt(1, student.getStudentId());
             preparedStatement.execute();
             System.out.println("Student deleted !!!");
         } catch (SQLException e) {
@@ -95,7 +100,7 @@ public class DBProcess {
                 String name = resultSet.getString("name");
                 String surname = resultSet.getString("surname");
                 int birthdate = resultSet.getInt("birthdate");
-                int studentNumber = resultSet.getInt("studentNumber");
+                String studentNumber = resultSet.getString("studentNumber");
             System.out.println("ID: " + id +
                     ", Name: " + name +
                     ", Surname: " + surname +
