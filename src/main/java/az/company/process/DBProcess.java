@@ -8,7 +8,6 @@ import java.util.List;
 
 public class DBProcess {
     private static Connection connection = DBConnection.getConnection();
-    private static Statement statement = null;
     private static PreparedStatement preparedStatement = null;
     private static ResultSet resultSet = null;
     public static void createStudentTable(){
@@ -17,9 +16,6 @@ public class DBProcess {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.execute();
             System.out.println("Students table has been created successfully !");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
             if(preparedStatement != null) {
                 try {
                     preparedStatement.close();
@@ -27,8 +23,11 @@ public class DBProcess {
                     throw new RuntimeException(e);
                 }
             }
-        }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
         DBConnection.closeConnection();
+        }
     }
     public static void insertStudent(List<Student> listOfStudents){
         try {
@@ -81,7 +80,7 @@ public class DBProcess {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, student.getStudentId());
             preparedStatement.execute();
-            System.out.println("Student deleted !!!");
+            System.out.println("Student deleted correctly !!!");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
